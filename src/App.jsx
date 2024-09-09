@@ -1,38 +1,49 @@
 import React, {useState, useEffect} from 'react'
 import BooksContainer from './components/BooksContainer'
 import Header from './components/Header'
+import DetailPanel from './components/DetailPanel'
 import {GlobalStyle} from './styles'
+import {Transition} from 'react-transition-group'
 
 const App = () => {
   const [books, setBooks] = useState([])
-
-  console.log('this message will load whenever the component renders')
+  const [selectedBook, setSelectedBook] = useState(null)
+  const [showPanel, setShowPanel] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('http://book-club-json.herokuapp.com/books')
-        console.log('heres what our fetch request  returns: ', response)
-
-          const books = await response.json() 
-          console.log('our json-ified response: ', books) 
-          setBooks(books) 
+        const books = await response.json()
+        setBooks(books)
       } catch (errors) {
         console.log(errors)
       }
-
     }
 
     fetchData()
   }, [])
 
-  console.log('the books array in our state: ', books)
+  const pickBook = (book) => {
+    setSelectedBook(book)
+    setShowPanel(true)
+  }
+
+  const closePanel = () => {
+    setShowPanel(false)
+  }
 
   return (
     <>
       <GlobalStyle />
       <Header />
-      <BooksContainer books={books}  />
+      <BooksContainer books={books} pickBook={pickBook} isPanelOpen={showPanel} />
+      <Transition in={showPanel} timeout={300} >
+        {(state) => (
+          <DetailPanel book={selectedBook} closePanel={closePanel} state={state} />
+        )}
+
+      </Transition>
     </>
   )
 }
