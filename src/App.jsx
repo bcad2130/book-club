@@ -1,4 +1,7 @@
 import React, {useState, useEffect} from 'react'
+import BooksContainer from './components/BooksContainer'
+import Header from './components/Header'
+import {GlobalStyle} from './styles'
 
 const App = () => {
   const [books, setBooks] = useState([])
@@ -8,7 +11,7 @@ const App = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://boooooo  ok-club-json.herokuapp.com/books')
+        const response = await fetch('http://book-club-json.herokuapp.com/books')
         console.log('heres what our fetch request  returns: ', response)
 
           const books = await response.json() 
@@ -25,7 +28,13 @@ const App = () => {
 
   console.log('the books array in our state: ', books)
 
-  return <div>hello world</div>
+  return (
+    <>
+      <GlobalStyle />
+      <Header />
+      <BooksContainer books={books}  />
+    </>
+  )
 }
 
 export default App;
