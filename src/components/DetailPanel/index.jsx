@@ -26,6 +26,4 @@ const DetailPanel = ({book, closePanel, state}) => {
   )
 }
 
-// TODO FIX : WHY IS THE X BUTTON ALWAYS SHOWING UP?
-
 export default DetailPanel
