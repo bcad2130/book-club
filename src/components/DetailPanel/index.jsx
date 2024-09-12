@@ -4,7 +4,7 @@ import {Close} from '../../styles'
 import Book from '../Book'
 
 const DetailPanel = ({book, closePanel, state}) => {
-  console.log(state)
+
   return (
     <>
       <BG onClick={closePanel} $state={state} />

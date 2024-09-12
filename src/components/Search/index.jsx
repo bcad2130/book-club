@@ -7,7 +7,6 @@ const Search = ({filterBooks}) => {
   const [showOnDesktop, setShowOnDesktop] = useState(false)
 
   const handleChange = (event) => {
-    console.log(event.target.value);
     filterBooks(event.target.value)
   }
 
