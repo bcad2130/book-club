@@ -11,7 +11,7 @@ const App = () => {
   const [showPanel, setShowPanel] = useState(false)
   const [showFaves, setShowFaves] = useState(false)
 
-  let faveBookIds = localStorage.getItem('faveBookIds') ? JSON.parse(localStorage.getItem('faveBookIds')) : []
+  const faveBookIds = localStorage.getItem('faveBookIds') ? JSON.parse(localStorage.getItem('faveBookIds')) : []
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +30,7 @@ const App = () => {
     }
 
     fetchData()
-  }, [faveBookIds])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const pickBook = (bookId) => {
     setBooks(books.map(book => (
@@ -75,10 +75,11 @@ const App = () => {
         book.id === bookId ? {...book, isFaved: !book.isFaved} : book
       ))
 
-      faveBookIds = faveBookIds.some((id) => id === bookId)
-                  ? faveBookIds
-                  : [...faveBookIds, bookId]
-      localStorage.setItem('faveBookIds', JSON.stringify(faveBookIds))
+      localStorage.setItem('faveBookIds', JSON.stringify(
+        updatedBooks
+          .filter(({isFaved}) => isFaved)
+          .map(({id}) => id)
+      ))
 
       return updatedBooks
     })
