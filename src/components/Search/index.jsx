@@ -1,8 +1,17 @@
 import React, {useRef, useState} from 'react'
-import {SearchContainer, Input, Icon, Wrapper} from './styles'
-import {Close} from '../../styles'
+import {SearchContainer, Input, Icon, Wrapper, FaveButtonContainer, Counter} from './styles'
+import {Close, Button} from '../../styles'
 
-const Search = ({filterBooks}) => {
+const FaveButton = ({showOnDesktop, showFaves, toggleShowFaves, faveBookIds}) => {
+  return (
+    <FaveButtonContainer style={showOnDesktop === true ? {display:'none'} : {display:'flex'}}>
+      <Counter>{faveBookIds}</Counter> 
+      <Button $isHeader='isHeader' onClick={toggleShowFaves}>{(showFaves === true) ? "Hide faves" : "Show Faves"}</Button>
+    </FaveButtonContainer>
+  )
+}
+
+const Search = ({filterBooks, showFaves, toggleShowFaves, faveBookIds}) => {
   const inputEl = useRef(null)
   const [showOnDesktop, setShowOnDesktop] = useState(false)
 
@@ -17,11 +26,13 @@ const Search = ({filterBooks}) => {
   }
 
   const showSearch = () => {
+    console.log('showSearch')
     setShowOnDesktop(true)
   }
 
   return (
     <Wrapper>
+      <FaveButton showOnDesktop={showOnDesktop} showFaves={showFaves} toggleShowFaves={toggleShowFaves} faveBookIds={faveBookIds}/>
       <SearchContainer $showOnDesktop={showOnDesktop}>
         <Icon onClick={showSearch} />
         <Input ref={inputEl} type="text" name="search" autoComplete="off" onChange={handleChange} />

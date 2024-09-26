@@ -8,27 +8,34 @@ import {Transition} from 'react-transition-group'
 
 const App = () => {
   const [books, setBooks] = useState([])
-  const [selectedBook, setSelectedBook] = useState(null)
   const [showPanel, setShowPanel] = useState(false)
-  const [filteredBooks, setFilteredBooks] = useState([])
+  const [showFaves, setShowFaves] = useState(false)
+
+  const faveBookIds = localStorage.getItem('faveBookIds') ? JSON.parse(localStorage.getItem('faveBookIds')) : []
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('https://book-club-json.herokuapp.com/books')
         const books = await response.json()
-        setBooks(books)
-        setFilteredBooks(books)
+
+        setBooks(books.map((book) => ({
+          ...book,
+          isFaved: faveBookIds.includes(book.id)
+        })))
+
       } catch (errors) {
         console.log(errors)
       }
     }
 
     fetchData()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const pickBook = (book) => {
-    setSelectedBook(book)
+  const pickBook = (bookId) => {
+    setBooks(books.map(book => (
+      {...book, isPicked: book.id === bookId}
+    )))
     setShowPanel(true)
   }
 
@@ -40,29 +47,60 @@ const App = () => {
     const stringSearch = (bookAttribute, searchTerm) =>
       bookAttribute.toLowerCase().includes(searchTerm.toLowerCase())
 
-    if (!searchTerm) {
-      setFilteredBooks(books)
-    } else {
-      setFilteredBooks(
-        books.filter(
-          (book) => stringSearch(book.title, searchTerm) || stringSearch(book.author, searchTerm)
-        )
-      )
-    }
+    setBooks(books.map((book) => {
+        const isFiltered = !searchTerm
+          ? false
+          : stringSearch(book.title, searchTerm) || stringSearch(book.author, searchTerm)
+          ? false
+          : true
+
+        return {...book, isFiltered: isFiltered}
+      })
+    )
   }
 
-  const hasFiltered = filteredBooks.length !== books.length
+  const hasFiltered = books.some((book) => (book.isFiltered === true))
+
+  const displayBooks = hasFiltered 
+                    ?  books.filter((book) => !book.isFiltered)
+                    :  showFaves
+                    ?  books.filter((book) => book.isFaved)
+                    :  books
+
+  const toggleFave = (bookId) => {
+
+    setBooks((books) => {
+
+      const updatedBooks = books.map((book) => (
+        book.id === bookId ? {...book, isFaved: !book.isFaved} : book
+      ))
+
+      localStorage.setItem('faveBookIds', JSON.stringify(
+        updatedBooks
+          .filter(({isFaved}) => isFaved)
+          .map(({id}) => id)
+      ))
+
+      return updatedBooks
+    })
+  }
+
+  const toggleShowFaves = () => (
+    setShowFaves(!showFaves)
+  )
+
+  const selectedBook = books.find(book => book.isPicked)
 
   return (
     <>
       <GlobalStyle />
       <Header>
-        <Search filterBooks={filterBooks} />
+        <Search filterBooks={filterBooks} showFaves={showFaves} toggleShowFaves={toggleShowFaves} faveBookIds={faveBookIds.length} />
       </Header>
-      <BooksContainer books={filteredBooks} pickBook={pickBook} isPanelOpen={showPanel} title={hasFiltered ? 'Search results' : 'All books'} />
+      <BooksContainer books={displayBooks} pickBook={pickBook} isPanelOpen={showPanel} title={hasFiltered ? 'Search results' : showFaves ? 'Favorite books' : 'All books'} />
       <Transition in={showPanel} timeout={300} >
         {(state) => (
-          <DetailPanel book={selectedBook} closePanel={closePanel} state={state} />
+          <DetailPanel book={selectedBook} closePanel={closePanel} state={state} toggleFave={toggleFave}/>
         )}
 
       </Transition>

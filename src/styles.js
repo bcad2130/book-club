@@ -12,7 +12,7 @@ export const GlobalStyle = createGlobalStyle`
 
 export const Pill = styled.div`
   background: #a7e1f8;
-  border: 2px: solid #000;
+  border: 2px solid #000;
   border-radius: 30px;
   height: 20px;
   width: 20px;
@@ -49,5 +49,24 @@ export const Close = styled.button`
 
   &::after {
     transform: rotate(-45deg);
+  }
+`
+
+export const Button = styled.button`
+  display: block;
+  border: 2px solid #000;
+  border-radius: 30px;
+  padding: ${({$hasEmoji}) => ($hasEmoji ? '5px 14px' : '8px')};
+  background: none;
+  cursor: pointer;
+  margin: 0 0 1em 0;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 18px;
+  width: ${({$isHeader}) => $isHeader ? '140px' : 'unset'};
+  margin-bottom: ${({$isHeader}) => $isHeader ? '0' : '14px'};
+
+  @media (max-width: 1000px) {
+    font-size: 14px;
+    width: ${({$isHeader}) => $isHeader ? '110px' : 'unset'};
   }
 `

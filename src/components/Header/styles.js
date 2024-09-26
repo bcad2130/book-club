@@ -6,7 +6,7 @@ export const Logo = styled(LogoSVG)`
   width: 270px;
   display: block;
 
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     height: 33px;
     width: 222px;
   }
@@ -24,7 +24,13 @@ export const HeaderContainer = styled.header`
   position: fixed;
   z-index: 3;
 
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     padding: 20px;
   }
+`
+
+export const RightHeaderContainer = styled.header`
+  display: flex;
+  justify-content: space-between;
+  right: 0;
 `
