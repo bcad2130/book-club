@@ -30,7 +30,7 @@ const App = () => {
     }
 
     fetchData()
-  }, [])
+  }, [faveBookIds])
 
   const pickBook = (bookId) => {
     setBooks(books.map(book => (
