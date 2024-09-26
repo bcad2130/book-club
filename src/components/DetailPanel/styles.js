@@ -19,7 +19,7 @@ export const Panel = styled.article`
   overflow: scroll;
   transition: 300ms;
 
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     border-left: none;
     padding: 40px 86px 20px 20px;
     width: 100vw;
@@ -48,7 +48,7 @@ export const CloseWrapper = styled(Pill)`
   position: fixed;
   z-index: 4;
 
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     top: unset;
     bottom: 20px;
     right: 20px;

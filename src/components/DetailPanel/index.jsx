@@ -1,9 +1,9 @@
 import React from 'react'
 import {Panel, P, Em, CloseWrapper, BG} from './styles'
-import {Close} from '../../styles'
+import {Close, Button} from '../../styles'
 import Book from '../Book'
 
-const DetailPanel = ({book, closePanel, state}) => {
+const DetailPanel = ({book, closePanel, state, toggleFave}) => {
 
   return (
     <>
@@ -15,6 +15,9 @@ const DetailPanel = ({book, closePanel, state}) => {
 
         {book && (
           <>
+            <Button onClick={() => toggleFave(book.id)} $hasEmoji={true} >
+              {book.isFaved ? '💔 Unfave book' : '❤️ Fave book'}
+            </Button>
             <Book book={book} isLarge={true}/>
             <P>{book.description}</P>
             <P>

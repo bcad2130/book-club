@@ -19,7 +19,7 @@ export const Title = styled.h3`
   margin: 0 0 10px 0;
   line-height: 1.3;
 
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     font-size: ${({$isLarge}) => ($isLarge ? '32px' : '22px')};
   }
 `
