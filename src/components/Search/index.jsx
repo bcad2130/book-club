@@ -5,7 +5,7 @@ import {Close, Button} from '../../styles'
 const FaveButton = ({showOnDesktop, showFaves, toggleShowFaves, faveBookIds}) => {
   return (
     <FaveButtonContainer style={showOnDesktop === true ? {display:'none'} : {display:'flex'}}>
-      <Counter>{faveBookIds}</Counter> 
+      <Counter $showFaves={showFaves} >{faveBookIds}</Counter>
       <Button $isHeader='isHeader' onClick={toggleShowFaves}>{(showFaves === true) ? "Hide faves" : "Show Faves"}</Button>
     </FaveButtonContainer>
   )

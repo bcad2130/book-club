@@ -63,6 +63,7 @@ export const FaveButtonContainer = styled.div`
 `
 
 export const Counter = styled(Pill)`
+  display: ${({$showFaves}) => ($showFaves ? 'none' : 'flex')};
   position: relative;
   top: -10px;
   right: -150px;
